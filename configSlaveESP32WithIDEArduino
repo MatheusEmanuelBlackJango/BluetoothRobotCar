@@ -1,0 +1,99 @@
+#include "BluetoothSerial.h"
+
+//Cria objeto Bluetooth
+BluetoothSerial ESP_BT; 
+
+//motor_A
+const byte in1 = 25;
+const byte in2 = 26 ;
+ 
+//motor_B
+const byte in3 = 27 ;
+const byte in4 = 14 ;
+
+char leituraBt;
+
+
+void setup(){
+  ESP_BT.begin("ESP32 - Oficina 4.0"); //Name of your Bluetooth Signal
+  pinMode(in1,OUTPUT);
+  pinMode(in2,OUTPUT);
+  pinMode(in3,OUTPUT);
+  pinMode(in4,OUTPUT);
+  Serial.begin(115200); 
+}
+
+    
+void loop(){
+  if (ESP_BT.available()){
+    leituraBt = ESP_BT.read();
+
+    switch (leituraBt){
+      case 49:
+      direita();
+      break;
+
+      case 48:
+      esquerda();
+      break;
+
+      case 100:
+      frente();
+      break;
+
+      case 108:
+      tras();
+      break;
+
+      default:
+      desliga();
+      break;
+    } 
+  }
+}
+
+void desliga(){
+  digitalWrite(in1,LOW);
+  digitalWrite(in2,LOW);
+  digitalWrite(in3,LOW);
+  digitalWrite(in4,LOW);
+}
+
+void direita(){  
+  digitalWrite(in1,HIGH);
+  digitalWrite(in2,LOW);
+  digitalWrite(in3,LOW);
+  digitalWrite(in4,LOW);
+  delay(500);
+  digitalWrite(in1,HIGH);
+  digitalWrite(in2,LOW);
+  digitalWrite(in3,HIGH);
+  digitalWrite(in4,LOW);
+}
+
+ void esquerda(){
+  digitalWrite(in1,LOW);
+  digitalWrite(in2,LOW);
+  digitalWrite(in3,HIGH);
+  digitalWrite(in4,LOW);
+   delay(500);
+  digitalWrite(in1,HIGH);
+  digitalWrite(in2,LOW);
+  digitalWrite(in3,HIGH);
+  digitalWrite(in4,LOW);
+}
+
+void frente(){
+  digitalWrite(in1,LOW);
+  digitalWrite(in2,HIGH);
+  digitalWrite(in3,LOW);
+  digitalWrite(in4,HIGH);
+}
+
+void tras(){
+  digitalWrite(in1,HIGH);
+  digitalWrite(in2,LOW);
+  digitalWrite(in3,HIGH);
+  digitalWrite(in4,LOW);
+  ;
+}
